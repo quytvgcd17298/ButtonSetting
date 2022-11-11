@@ -11,21 +11,14 @@ const ColorInput = ({
   style,
   inputStyle,
   lable,
+  visible,
+  onPress,
+  onColorSelected,
   ...rest
   }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const turnModal = () => {
-        setModalVisible(!modalVisible);
-      };
-    const offModal = (color) => {
-      setModalVisible(!modalVisible)
-      // setInputColor(color)
-      setValue("textColor", color)
-      console.log(color)
-    }
   return (
     <>
-    {lable && <Text style = {{marginBottom:5}}>{lable}</Text>}
+    {lable && <Text style = {{marginBottom:2}}>{lable}</Text>}
     <View style={[
             {
               width:'95%',
@@ -33,6 +26,7 @@ const ColorInput = ({
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              backgroundColor:"white"
             },
             style,
           ]}>
@@ -47,19 +41,19 @@ const ColorInput = ({
       </TextInput>
       <TouchableOpacity
       style = {{height:20, width:20, borderWidth:1, backgroundColor: getValues}}
-      onPress = {turnModal}/>
+      onPress = {onPress}/>
     </View>
     <Modal
-    style={{backgroundColor:"black"}}
-      animationType="slide"
-      transparent={true}
-      visible={modalVisible}
-      >
-        <TriangleColorPicker
-            onColorSelected={offModal}
-            style={{flex: 1}}
-        ></TriangleColorPicker>
-      </Modal>
+              style={{backgroundColor:"black"}}
+              animationType="slide"
+              transparent={true}
+              visible={visible}
+              >
+              <TriangleColorPicker
+                onColorSelected = {onColorSelected}
+                style={{flex: 1}}
+              ></TriangleColorPicker>
+    </Modal>
     </>
   )
 }

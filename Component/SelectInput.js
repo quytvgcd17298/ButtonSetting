@@ -6,20 +6,17 @@ import {
   } from "react-native";
   import React from "react";
 
-const FormInput = ({
+const SeclectInput = ({
     style,
     inputStyle,
-    lable,
     ...rest
 }) => {
   return (
     <>
-    {lable && <Text style = {{marginBottom:2}}>{lable}</Text>}
     <View style={[
             {
-              width:'95%',
               flexDirection:"row",
-              height: 45,
+              height: 50,
               alignItems: "center",
               justifyContent: "space-between",
               backgroundColor:"white"
@@ -38,6 +35,6 @@ const FormInput = ({
   )
 }
 
-export default FormInput
+export default SeclectInput
 
 const styles = StyleSheet.create({})
