@@ -44,10 +44,10 @@ const ColorInput = ({
       onPress = {onPress}/>
     </View>
     <Modal
-              style={{backgroundColor:"black"}}
-              animationType="slide"
-              transparent={true}
+              animationType="fade"
+              transparent={false}
               visible={visible}
+              presentationStyle ="fullScreen"
               >
               <TriangleColorPicker
                 onColorSelected = {onColorSelected}

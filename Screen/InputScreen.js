@@ -3,19 +3,23 @@ import React, { useState } from 'react'
 import FormInput from '../Component/FormInput'
 import { Controller, useForm } from 'react-hook-form';
 import ColorInput from '../Component/ColorInput';
-import { TriangleColorPicker } from 'react-native-color-picker'
-import Modal from "react-native-modal";
 import DropDownPicker from 'react-native-dropdown-picker';
 import SeclectInput from '../Component/SelectInput';
+import ButtonResult from '../Component/ButtonResult';
 
 const InputScreen = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalBackgroundVisible, setModalBackgroundVisible] = useState(false);
   const [modalBorderVisible, setModalBorderVisible] = useState(false);  
+  
   const [openBorderWidthSelect, setOpenBorderWidthSelect] = useState(false);
-  const [openBorderHeightSelect, setOpenBorderHeightSelect] = useState(false);
   const [openWidthInput,setOpenWidthInput] = useState(false);
+
+  const [openBorderHeightSelect, setOpenBorderHeightSelect] = useState(false);
   const [openHeightInput,setOpenHeightInput] = useState(false)
+
+  const [openBorderSeclect, setOpenBorderSelect] = useState(false)
+  const [openBorderInput, setOpenBorderInput] = useState(false)
 
 
 
@@ -27,9 +31,13 @@ const {
     formState: { errors },
   } = useForm({
     defaultValues:{
-      text:"",
-      textColor:"",
-      backgroundColor:"",
+      text:"I am a button",
+      textColor:"#ffffff",
+      backgroundColor:"#CB2E2E",
+      buttonWidthValue: "",
+      buttonHeightValue: "",
+      borderRadius: 2,
+      borderColor:"#000000"
     },
     mode: "onChange",
   });
@@ -41,14 +49,12 @@ const {
   const heightTest = getValues("buttonHeightValue")
   const borderRadiusTest = getValues("borderRadius")
   const borderColorTest = getValues("borderColor")
-
-    
+  
   return (
-    <ScrollView>
     <SafeAreaView>
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TouchableOpacity
-        style = {{alignItems:'center',borderWidth:2, height:30, width:70,}}
+        style = {{alignItems:'center',borderWidth:2, height:30, width:70, borderRadius:5}}
         onPress={({data})=> console.log(getValues(data))}
         >
         <Text>Create</Text>
@@ -170,10 +176,11 @@ const {
             ]}
           value={value}
           setValue={onChange}
-          onChangeValue={(e) => {onChange
-            if(e === 'Fixed') {
+          onChangeValue={(value) => {onChange
+            if(value === 'Fixed') {
               setOpenWidthInput(true)
             } else {
+              setValue("buttonWidthValue", 100 )
               setOpenWidthInput(false)
             }
           }}
@@ -210,7 +217,7 @@ const {
         <Text>Button Height</Text>
         <View style = {{flexDirection:"row"}}>
         <View>
-          <Controller
+        <Controller
           name="borderHeight"
           control={control}
           render={({ field: { onChange, value } }) => (
@@ -235,10 +242,11 @@ const {
             ]}
           value={value}
           setValue={onChange}
-          onChangeValue={(e) => {onChange
-            if(e === 'Fixed') {
+          onChangeValue={(value) => {onChange
+            if(value === 'Fixed') {
               setOpenHeightInput(true)
             } else {
+              setValue("buttonHeightValue", 100 )
               setOpenHeightInput(false)
             }
           }}
@@ -292,6 +300,48 @@ const {
             )}
           />
         </View>
+                
+        <View style = {styles.containerChild}>
+        <Controller
+          name = "border"
+          control={control}
+          render = {({ field:{ onChange, value}}) => (
+            <View>
+              <DropDownPicker
+          style={{
+            borderColor: "#A5A5A5",
+            marginVertical: 10,
+            marginRight:5,
+            borderRadius: 4,
+            borderWidth: 1,
+            paddingHorizontal: 12,
+            height:45,
+            width:150
+            }} 
+          listMode="SCROLLVIEW"   
+          dropDownDirection="TOP"      
+          open={openBorderSeclect}
+          setOpen={setOpenBorderSelect}
+          items={[
+            { label: 'Yes', value: 'Yes' },
+            { label: 'No', value: 'No' },
+            ]}
+          value={value}
+          setValue={onChange}
+          onChangeValue={(value) => {onChange
+            if(value === 'Yes') {
+              setOpenBorderInput(true)
+            } else {
+              setValue("buttonHeightValue", 100 )
+              setOpenBorderInput(false)
+            }
+          }}
+          ></DropDownPicker>
+            </View>
+          )}
+        ></Controller>        
+        </View>
+
 
         <View style = {styles.containerChild}>
         <Controller
@@ -325,9 +375,20 @@ const {
             )}
           />
         </View>
-        </View>
-        </SafeAreaView>
+        <ButtonResult
+        buttonStyle={{
+          borderColor: borderColorTest,
+          backgroundColor: backgroundColorTest,
+          borderWidth:1 , 
+        }}
+        borderRadius ={Math.floor(borderRadiusTest)}
+        buttonName = {text}
+        textColor = {textColorTest}
+        width = {Math.floor(widthTest)}
+        height = {Math.floor(heightTest)}
+        ></ButtonResult>
     </ScrollView>
+    </SafeAreaView>
   )
 }
 const styles = StyleSheet.create({
