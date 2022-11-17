@@ -21,6 +21,7 @@ const InputScreen = () => {
   const [openBorderSeclect, setOpenBorderSelect] = useState(false)
   const [openBorderInput, setOpenBorderInput] = useState(false)
 
+  const [openBorderStyleSelect, setOpenBorderStyleSelect] = useState(false)
 
 
 const {
@@ -35,8 +36,10 @@ const {
       textColor:"#ffffff",
       backgroundColor:"#CB2E2E",
       buttonWidthValue: "",
-      buttonHeightValue: "",
-      borderRadius: 2,
+      buttonHeightValue:"",
+      buttonWidth:"2",
+      borderStyle:"solid",
+      borderRadius: "0",
       borderColor:"#000000"
     },
     mode: "onChange",
@@ -47,6 +50,8 @@ const {
   const backgroundColorTest = getValues("backgroundColor")
   const widthTest = getValues("buttonWidthValue")
   const heightTest = getValues("buttonHeightValue")
+  const buttonWidthTest = getValues("buttonWidth")
+  const borderStyleTest = getValues("borderStyle")
   const borderRadiusTest = getValues("borderRadius")
   const borderColorTest = getValues("borderColor")
   
@@ -54,8 +59,8 @@ const {
     <SafeAreaView>
       <ScrollView style={styles.container}>
         <TouchableOpacity
-        style = {{alignItems:'center',borderWidth:2, height:30, width:70, borderRadius:5}}
-        onPress={({data})=> console.log(getValues(data))}
+        style = {{alignItems:'center', justifyContent:'center',borderWidth:2, height:50, width:100, borderRadius:5}}
+        onPress={({data})=> console.log(getValues("borderStyle"))}
         >
         <Text>Create</Text>
         </TouchableOpacity>
@@ -179,8 +184,11 @@ const {
           onChangeValue={(value) => {onChange
             if(value === 'Fixed') {
               setOpenWidthInput(true)
+            } else if (value === 'Dynamic')
+            {
+              setValue("buttonWidthValue", 200 )
+              setOpenWidthInput(false)
             } else {
-              setValue("buttonWidthValue", 100 )
               setOpenWidthInput(false)
             }
           }}
@@ -245,8 +253,11 @@ const {
           onChangeValue={(value) => {onChange
             if(value === 'Fixed') {
               setOpenHeightInput(true)
-            } else {
-              setValue("buttonHeightValue", 100 )
+            } else if (value === 'Dynamic') {
+              setValue("buttonHeightValue", 56 )
+              setOpenHeightInput(false)
+            }
+            else {
               setOpenHeightInput(false)
             }
           }}
@@ -268,7 +279,7 @@ const {
                   borderWidth: 1,
                   width:200,
                   borderColor: "#A5A5A5",
-                }}
+                }}    
                 placeholder="px"
                 value={value}
                 onChangeText={onChange}
@@ -279,35 +290,15 @@ const {
         </View>
         </View>  
 
-        <View style = {styles.containerChild}>
+        <View>
+        <Text>Border</Text>
+        <View style = {{flexDirection:"row"}}>
+        <View>
         <Controller
-            name="borderRadius"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <FormInput
-                style={{
-                  marginVertical: 10,
-                  borderRadius: 4,
-                  borderWidth:1,
-                  paddingHorizontal: 12,
-                  borderColor: "#A5A5A5",
-                }}
-                lable = "Border Radius"
-                placeholder="Border Radius"
-                value={value}
-                onChangeText={onChange}
-                />
-            )}
-          />
-        </View>
-                
-        <View style = {styles.containerChild}>
-        <Controller
-          name = "border"
+          name="border"
           control={control}
-          render = {({ field:{ onChange, value}}) => (
-            <View>
-              <DropDownPicker
+          render={({ field: { onChange, value } }) => (
+          <DropDownPicker
           style={{
             borderColor: "#A5A5A5",
             marginVertical: 10,
@@ -332,16 +323,89 @@ const {
             if(value === 'Yes') {
               setOpenBorderInput(true)
             } else {
-              setValue("buttonHeightValue", 100 )
               setOpenBorderInput(false)
             }
           }}
           ></DropDownPicker>
-            </View>
           )}
-        ></Controller>        
-        </View>
+        ></Controller>
+      </View>
 
+        {openBorderInput === true && <View style = {{ paddingBottom:15}}>
+        <Controller
+          name="borderStyle"
+          control={control}
+          render={({ field: { onChange, value } }) => (
+          <DropDownPicker
+          style={{
+            borderColor: "#A5A5A5",
+            marginVertical: 10,
+            marginRight:5,
+            borderRadius: 4,
+            borderWidth: 1,
+            paddingHorizontal: 12,
+            height:45,
+            width:200
+            }} 
+          listMode="SCROLLVIEW"   
+          dropDownDirection="TOP"      
+          open={openBorderStyleSelect}
+          setOpen={setOpenBorderStyleSelect}
+          items={[
+            { label: 'dashed', value: 'dashed' },
+            { label: 'dotted', value: 'dotted' },
+            { label: 'solid', value: 'solid' },
+            ]}
+          value={value}
+          setValue={onChange}
+          onChangeValue={onChange}
+          ></DropDownPicker>
+          )}
+        ></Controller>
+        <Controller
+            name="buttonWidth"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <SeclectInput
+                style={{
+                  paddingHorizontal:10,
+                  marginVertical: 10,
+                  borderRadius: 4,
+                  borderWidth: 1,
+                  width:200,
+                  borderColor: "#A5A5A5",
+                }}    
+                placeholder="px"
+                value={value}
+                onChangeText={onChange}
+                />
+            )}
+          />        
+        </View>}
+        </View>
+        </View>                 
+
+        <View style = {styles.containerChild}>
+        <Controller
+            name="borderRadius"
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <FormInput
+                style={{
+                  marginVertical: 10,
+                  borderRadius: 4,
+                  borderWidth:1,
+                  paddingHorizontal: 12,
+                  borderColor: "#A5A5A5",
+                }}
+                lable = "Border Radius"
+                placeholder="Border Radius"
+                value={value}
+                onChangeText={onChange}
+                />
+            )}
+          />
+        </View>
 
         <View style = {styles.containerChild}>
         <Controller
@@ -379,9 +443,10 @@ const {
         buttonStyle={{
           borderColor: borderColorTest,
           backgroundColor: backgroundColorTest,
-          borderWidth:1 , 
         }}
+        borderWidth = {Math.floor(buttonWidthTest)} 
         borderRadius ={Math.floor(borderRadiusTest)}
+        borderStyle = {borderStyleTest}
         buttonName = {text}
         textColor = {textColorTest}
         width = {Math.floor(widthTest)}

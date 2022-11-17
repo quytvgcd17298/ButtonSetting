@@ -7,6 +7,8 @@ const ButtonResult = ({
   borderRadius,
   buttonStyle,
   buttonName,
+  borderWidth,
+  borderStyle,
   width,
   height,
   textColor,
@@ -21,6 +23,8 @@ const ButtonResult = ({
           justifyContent: 'center',
           alignItems: 'center',
           borderRadius: borderRadius,
+          borderWidth: borderWidth,
+          borderStyle: borderStyle,
           width: width,
           height: height,
           marginBottom: 20
