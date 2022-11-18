@@ -6,25 +6,27 @@ import ColorInput from '../Component/ColorInput';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SeclectInput from '../Component/SelectInput';
 import ButtonResult from '../Component/ButtonResult';
+import uuid from 'react-native-uuid';
+import { useDispatch, useSelector } from 'react-redux'
+import buttonSlice from '../Redux/buttonSlice';
 
-const InputScreen = () => {
+const InputScreen = ({navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [modalBackgroundVisible, setModalBackgroundVisible] = useState(false);
   const [modalBorderVisible, setModalBorderVisible] = useState(false);  
   
   const [openBorderWidthSelect, setOpenBorderWidthSelect] = useState(false);
-  const [openWidthInput,setOpenWidthInput] = useState(false);
+  const [buttonWidth, setButtonWidth] = useState(null)
 
   const [openBorderHeightSelect, setOpenBorderHeightSelect] = useState(false);
-  const [openHeightInput,setOpenHeightInput] = useState(false)
+  const [buttonHeight, setButtonHeight] = useState(null)
 
   const [openBorderSeclect, setOpenBorderSelect] = useState(false)
-  const [openBorderInput, setOpenBorderInput] = useState(false)
+  const [border, setBorder] = useState(null)
 
   const [openBorderStyleSelect, setOpenBorderStyleSelect] = useState(false)
 
-
-const {
+  const {
     control,
     handleSubmit,
     setValue,
@@ -32,15 +34,17 @@ const {
     formState: { errors },
   } = useForm({
     defaultValues:{
-      text:"I am a button",
-      textColor:"#ffffff",
-      backgroundColor:"#CB2E2E",
-      buttonWidthValue: "",
-      buttonHeightValue:"",
-      buttonWidth:"2",
-      borderStyle:"solid",
-      borderRadius: "0",
-      borderColor:"#000000"
+            text:"",
+            textColor:"",
+            backgroundColor:"",
+            buttonWidth:"",
+            buttonWidthValue:"" ,
+            buttonHeight:"",
+            buttonHeightValue:"",
+            buttonWidth:"" ,
+            borderStyle:"solid",
+            borderRadius: "",
+            borderColor:""
     },
     mode: "onChange",
   });
@@ -55,12 +59,35 @@ const {
   const borderRadiusTest = getValues("borderRadius")
   const borderColorTest = getValues("borderColor")
   
+  const dispatch = useDispatch();
+  const myListButton = useSelector(state => state.buttonSlice);
+  const handleButton = () => {
+    dispatch(
+      buttonSlice.actions.createMyButton({
+      id: uuid.v4(),
+      text:text,
+      textColor:textColorTest,
+      backgroundColor:backgroundColorTest,
+      buttonWidth: buttonWidth,
+      buttonHeight: buttonHeight,
+      buttonWidthValue: Math.floor(widthTest),
+      buttonHeightValue: Math.floor(heightTest),
+      buttonWidth:Math.floor(buttonWidthTest),
+      borderStyle:borderStyleTest,
+      borderRadius: Math.floor(borderRadiusTest),
+      borderColor:borderColorTest
+      }),
+    );
+  };
+
   return (
     <SafeAreaView>
       <ScrollView style={styles.container}>
         <TouchableOpacity
         style = {{alignItems:'center', justifyContent:'center',borderWidth:2, height:50, width:100, borderRadius:5}}
-        onPress={({data})=> console.log(getValues("borderStyle"))}
+        onPress={()=>handleButton(
+          navigation.navigate("Result")
+        )}
         >
         <Text>Create</Text>
         </TouchableOpacity>
@@ -156,10 +183,6 @@ const {
         <Text>Button Width</Text>
         <View style = {{flexDirection:"row"}}>
         <View>
-          <Controller
-          name="borderWidth"
-          control={control}
-          render={({ field: { onChange, value } }) => (
           <DropDownPicker
           style={{
             borderColor: "#A5A5A5",
@@ -179,25 +202,12 @@ const {
             { label: 'Dynamic', value: 'Dynamic' },
             { label: 'Fixed', value: 'Fixed' },
             ]}
-          value={value}
-          setValue={onChange}
-          onChangeValue={(value) => {onChange
-            if(value === 'Fixed') {
-              setOpenWidthInput(true)
-            } else if (value === 'Dynamic')
-            {
-              setValue("buttonWidthValue", 200 )
-              setOpenWidthInput(false)
-            } else {
-              setOpenWidthInput(false)
-            }
-          }}
+          value={buttonWidth}
+          setValue={setButtonWidth}
           ></DropDownPicker>
-          )}
-        ></Controller>
       </View>
 
-        {openWidthInput === true && <View style = {{ paddingBottom:15}}>
+        {buttonWidth === "Fixed" && <View style = {{ paddingBottom:15}}>
         <Controller
             name="buttonWidthValue"
             control={control}
@@ -218,6 +228,7 @@ const {
             )}
           />
         </View>}
+        {buttonWidth === 'Dynamic' && setValue("buttonWidthValue", 100)} 
         </View>
         </View>  
 
@@ -225,10 +236,6 @@ const {
         <Text>Button Height</Text>
         <View style = {{flexDirection:"row"}}>
         <View>
-        <Controller
-          name="borderHeight"
-          control={control}
-          render={({ field: { onChange, value } }) => (
           <DropDownPicker
           style={{
             borderColor: "#A5A5A5",
@@ -248,25 +255,12 @@ const {
             { label: 'Dynamic', value: 'Dynamic' },
             { label: 'Fixed', value: 'Fixed' },
             ]}
-          value={value}
-          setValue={onChange}
-          onChangeValue={(value) => {onChange
-            if(value === 'Fixed') {
-              setOpenHeightInput(true)
-            } else if (value === 'Dynamic') {
-              setValue("buttonHeightValue", 56 )
-              setOpenHeightInput(false)
-            }
-            else {
-              setOpenHeightInput(false)
-            }
-          }}
+          value={buttonHeight}
+          setValue={setButtonHeight}
           ></DropDownPicker>
-          )}
-        ></Controller>
       </View>
 
-        {openHeightInput === true && <View style = {{ paddingBottom:15}}>
+        {buttonHeight === "Fixed" && <View style = {{ paddingBottom:15}}>
         <Controller
             name="buttonHeightValue"
             control={control}
@@ -287,6 +281,7 @@ const {
             )}
           />
         </View>}
+       {buttonHeight === 'Dynamic' && setValue("buttonHeightValue", 56)} 
         </View>
         </View>  
 
@@ -294,10 +289,6 @@ const {
         <Text>Border</Text>
         <View style = {{flexDirection:"row"}}>
         <View>
-        <Controller
-          name="border"
-          control={control}
-          render={({ field: { onChange, value } }) => (
           <DropDownPicker
           style={{
             borderColor: "#A5A5A5",
@@ -317,21 +308,12 @@ const {
             { label: 'Yes', value: 'Yes' },
             { label: 'No', value: 'No' },
             ]}
-          value={value}
-          setValue={onChange}
-          onChangeValue={(value) => {onChange
-            if(value === 'Yes') {
-              setOpenBorderInput(true)
-            } else {
-              setOpenBorderInput(false)
-            }
-          }}
+          value={border}
+          setValue={setBorder}
           ></DropDownPicker>
-          )}
-        ></Controller>
       </View>
 
-        {openBorderInput === true && <View style = {{ paddingBottom:15}}>
+        {border === "Yes" && <View style = {{ paddingBottom:15}}>
         <Controller
           name="borderStyle"
           control={control}
@@ -452,6 +434,10 @@ const {
         width = {Math.floor(widthTest)}
         height = {Math.floor(heightTest)}
         ></ButtonResult>
+        <TouchableOpacity
+        onPress={()=> console.log(buttonWidthTest)}
+        style={{height:20,width:20, borderWidth:1}}
+        ></TouchableOpacity>
     </ScrollView>
     </SafeAreaView>
   )

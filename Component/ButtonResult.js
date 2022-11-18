@@ -3,7 +3,6 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const ButtonResult = ({
-  props,
   borderRadius,
   buttonStyle,
   buttonName,
