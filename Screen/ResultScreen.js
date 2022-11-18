@@ -19,10 +19,8 @@ const ResultScreen = () => {
             <View style = {{borderBottomWidth:1}}>
             <ButtonResult
               key={item.id}
-              buttonStyle={{
-                borderColor: item.borderColorTest,
-                backgroundColor: item.backgroundColorTest,
-              }}
+              borderColor = {item.borderColorTest}
+              backgroundColor = {item.backgroundColorTest}
               buttonWidth={item.buttonWidth}
               buttonHeight={item.buttonHeight}
               borderWidth = {Math.floor(item.buttonWidthTest)} 
