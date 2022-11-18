@@ -34,17 +34,18 @@ const InputScreen = ({navigation}) => {
     formState: { errors },
   } = useForm({
     defaultValues:{
-            text:"",
-            textColor:"",
-            backgroundColor:"",
-            buttonWidth:"",
-            buttonWidthValue:"" ,
-            buttonHeight:"",
-            buttonHeightValue:"",
-            buttonWidth:"" ,
+            text: "Iam Button",
+            textColor:"white",
+            backgroundColor:"red",
+            buttonWidth: "Dynamic",
+            buttonWidthValue: 56,
+            buttonHeight: "Dynamic",
+            border:"No",
+            buttonHeightValue: 56,
+            borderWidth: 2,
             borderStyle:"solid",
-            borderRadius: "",
-            borderColor:""
+            borderRadius: 5,
+            borderColor:"black",
     },
     mode: "onChange",
   });
@@ -52,32 +53,35 @@ const InputScreen = ({navigation}) => {
   const text = getValues("text")
   const textColorTest = getValues("textColor")
   const backgroundColorTest = getValues("backgroundColor")
-  const widthTest = getValues("buttonWidthValue")
-  const heightTest = getValues("buttonHeightValue")
-  const buttonWidthTest = getValues("buttonWidth")
+  const widthTest = Math.floor(getValues("buttonWidthValue"))
+  const heightTest = Math.floor(getValues("buttonHeightValue"))
+  const buttonWidthTest = Math.floor(getValues("borderWidth"))
   const borderStyleTest = getValues("borderStyle")
-  const borderRadiusTest = getValues("borderRadius")
+  const borderRadiusTest = Math.floor(getValues("borderRadius"))
   const borderColorTest = getValues("borderColor")
-  
-  const dispatch = useDispatch();
   const myListButton = useSelector(state => state.buttonSlice);
+  const dispatch = useDispatch();
   const handleButton = () => {
-    dispatch(
-      buttonSlice.actions.createMyButton({
-      id: uuid.v4(),
-      text:text,
-      textColor:textColorTest,
-      backgroundColor:backgroundColorTest,
-      buttonWidth: buttonWidth,
-      buttonHeight: buttonHeight,
-      buttonWidthValue: Math.floor(widthTest),
-      buttonHeightValue: Math.floor(heightTest),
-      buttonWidth:Math.floor(buttonWidthTest),
-      borderStyle:borderStyleTest,
-      borderRadius: Math.floor(borderRadiusTest),
-      borderColor:borderColorTest
-      }),
-    );
+    try {
+      dispatch(
+        buttonSlice.actions.createMyButton({
+        id: uuid.v4(),
+        text:text,
+        textColor:textColorTest,
+        backgroundColor:backgroundColorTest,
+        border: border === "No" ? 5: buttonWidthTest,
+        buttonWidthValue: buttonWidth === "Dynamic" ? 56 : Math.floor(widthTest),
+        buttonHeightValue: buttonHeight === "Dynamic" ? 56 : Math.floor(heightTest),
+        borderWidth:Math.floor(buttonWidthTest),
+        borderStyle:borderStyleTest,
+        borderRadius: Math.floor(borderRadiusTest),
+        borderColor:borderColorTest
+        }),
+      );
+    }
+    catch(err){
+      console.log(err)
+    }
   };
 
   return (
@@ -228,7 +232,6 @@ const InputScreen = ({navigation}) => {
             )}
           />
         </View>}
-        {buttonWidth === 'Dynamic' && setValue("buttonWidthValue", 100)} 
         </View>
         </View>  
 
@@ -281,8 +284,7 @@ const InputScreen = ({navigation}) => {
             )}
           />
         </View>}
-       {buttonHeight === 'Dynamic' && setValue("buttonHeightValue", 56)} 
-        </View>
+       </View>
         </View>  
 
         <View>
@@ -345,7 +347,7 @@ const InputScreen = ({navigation}) => {
           )}
         ></Controller>
         <Controller
-            name="buttonWidth"
+            name="borderWidth"
             control={control}
             render={({ field: { onChange, value } }) => (
               <SeclectInput
@@ -422,20 +424,21 @@ const InputScreen = ({navigation}) => {
           />
         </View>
         <ButtonResult
-        buttonStyle={{
-          borderColor: borderColorTest,
-          backgroundColor: backgroundColorTest,
-        }}
+        buttonWidth={buttonWidth}
+        buttonHeight={buttonHeight}
+        border = {border}
+        borderColor = {borderColorTest}
+        backgroundColor = {backgroundColorTest}
         borderWidth = {Math.floor(buttonWidthTest)} 
         borderRadius ={Math.floor(borderRadiusTest)}
         borderStyle = {borderStyleTest}
-        buttonName = {text}
+        text = {text}
         textColor = {textColorTest}
         width = {Math.floor(widthTest)}
         height = {Math.floor(heightTest)}
         ></ButtonResult>
         <TouchableOpacity
-        onPress={()=> console.log(buttonWidthTest)}
+        onPress={()=> console.log(myListButton)}
         style={{height:20,width:20, borderWidth:1}}
         ></TouchableOpacity>
     </ScrollView>
