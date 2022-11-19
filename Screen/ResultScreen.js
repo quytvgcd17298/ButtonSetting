@@ -1,11 +1,7 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import buttonSlice from '../Redux/buttonSlice';
 import ButtonResult from '../Component/ButtonResult';
-import {Provider} from 'react-redux';
-import store from '../Redux/store';
-import { ScrollView } from 'react-native-gesture-handler';
 
 const ResultScreen = () => {
   const myListButton = useSelector(state => state.buttonSlice);
@@ -19,17 +15,17 @@ const ResultScreen = () => {
             <View style = {{borderBottomWidth:1}}>
             <ButtonResult
               key={item.id}
-              borderColor = {item.borderColorTest}
-              backgroundColor = {item.backgroundColorTest}
+              borderColor = {item.borderColor}
+              backgroundColor = {item.backgroundColor}
               buttonWidth={item.buttonWidth}
               buttonHeight={item.buttonHeight}
-              borderWidth = {Math.floor(item.buttonWidthTest)} 
-              borderRadius = {Math.floor(item.borderRadiusTest)}
+              borderWidth = {Math.floor(item.borderWidth)} 
+              borderRadius = {Math.floor(item.borderRadius)}
               borderStyle = {item.borderStyleTest}
-              buttonName = {item.text}
-              textColor = {item.textColorTest}
-              width = {Math.floor(item.widthTest)}
-              height = {Math.floor(item.heightTest)}
+              text = {item.text}
+              textColor = {item.textColor}
+              width = {Math.floor(item.buttonWidthValue)}
+              height = {Math.floor(item.buttonHeightValue)}
               border = {item.border}
             ></ButtonResult>
             </View>

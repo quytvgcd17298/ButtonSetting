@@ -38,27 +38,28 @@ const InputScreen = ({navigation}) => {
             textColor:"white",
             backgroundColor:"red",
             buttonWidth: "Dynamic",
-            buttonWidthValue: 56,
+            buttonWidthValue: "56",
             buttonHeight: "Dynamic",
             border:"No",
-            buttonHeightValue: 56,
-            borderWidth: 2,
+            buttonHeightValue: "56",
+            borderWidth: "2",
             borderStyle:"solid",
-            borderRadius: 5,
+            borderRadius: "5",
             borderColor:"black",
     },
     mode: "onChange",
   });
 
   const text = getValues("text")
-  const textColorTest = getValues("textColor")
-  const backgroundColorTest = getValues("backgroundColor")
-  const widthTest = Math.floor(getValues("buttonWidthValue"))
-  const heightTest = Math.floor(getValues("buttonHeightValue"))
-  const buttonWidthTest = Math.floor(getValues("borderWidth"))
-  const borderStyleTest = getValues("borderStyle")
-  const borderRadiusTest = Math.floor(getValues("borderRadius"))
-  const borderColorTest = getValues("borderColor")
+  const textColor = getValues("textColor")
+  const backgroundColor = getValues("backgroundColor")
+  const width = Math.floor(getValues("buttonWidthValue"))
+  const height = Math.floor(getValues("buttonHeightValue"))
+  const borderWidth = Math.floor(getValues("borderWidth"))
+  const borderStyle = getValues("borderStyle")
+  const borderRadius = Math.floor(getValues("borderRadius"))
+  const borderColor = getValues("borderColor")
+  
   const myListButton = useSelector(state => state.buttonSlice);
   const dispatch = useDispatch();
   const handleButton = () => {
@@ -67,15 +68,17 @@ const InputScreen = ({navigation}) => {
         buttonSlice.actions.createMyButton({
         id: uuid.v4(),
         text:text,
-        textColor:textColorTest,
-        backgroundColor:backgroundColorTest,
-        border: border === "No" ? 5: buttonWidthTest,
-        buttonWidthValue: buttonWidth === "Dynamic" ? 56 : Math.floor(widthTest),
-        buttonHeightValue: buttonHeight === "Dynamic" ? 56 : Math.floor(heightTest),
-        borderWidth:Math.floor(buttonWidthTest),
-        borderStyle:borderStyleTest,
-        borderRadius: Math.floor(borderRadiusTest),
-        borderColor:borderColorTest
+        textColor:textColor,
+        backgroundColor:backgroundColor,
+        border: border,
+        buttonWidthValue:buttonWidth === "Dynamic" ? 100 : Math.floor(width),
+        buttonWidth:buttonWidth === "Fixed" && Math.floor(width),
+        buttonHeightValue:buttonHeight === "Dynamic"? 56 : Math.floor(height),
+        buttonHeight:buttonHeight === "Fixed" && Math.floor(height),
+        borderWidth:Math.floor(borderWidth),
+        borderStyle:borderStyle,
+        borderRadius: Math.floor(borderRadius),
+        borderColor:borderColor
         }),
       );
     }
@@ -137,7 +140,7 @@ const InputScreen = ({navigation}) => {
                 value={value}
                 onPress={() => setModalBackgroundVisible(!modalBackgroundVisible)}
                 onChangeText={onChange}
-                getValues={textColorTest}
+                getValues={textColor}
                 visible={modalBackgroundVisible}
                 onColorSelected = {(color) => {
                   setValue("textColor", color),
@@ -169,7 +172,7 @@ const InputScreen = ({navigation}) => {
                 value={value}
                 onPress={() => setModalVisible(!modalVisible)}
                 onChangeText={onChange}
-                getValues={backgroundColorTest}
+                getValues={backgroundColor}
                 visible={modalVisible}
                 onColorSelected={(color)=>{
                   setValue("backgroundColor", color),
@@ -410,7 +413,7 @@ const InputScreen = ({navigation}) => {
                 value={value}
                 onPress={() => setModalBorderVisible(!modalBorderVisible)}
                 onChangeText={onChange}
-                getValues={borderColorTest}
+                getValues={borderColor}
                 visible={modalBorderVisible}
                 onColorSelected={(color)=>{
                   setValue("borderColor", color),
@@ -427,15 +430,16 @@ const InputScreen = ({navigation}) => {
         buttonWidth={buttonWidth}
         buttonHeight={buttonHeight}
         border = {border}
-        borderColor = {borderColorTest}
-        backgroundColor = {backgroundColorTest}
-        borderWidth = {Math.floor(buttonWidthTest)} 
-        borderRadius ={Math.floor(borderRadiusTest)}
-        borderStyle = {borderStyleTest}
+        borderColor = {borderColor}
+        backgroundColor = {backgroundColor}
+        borderWidth = {Math.floor(borderWidth)} 
+        borderRadius ={Math.floor(borderRadius)}
+        borderStyle = {borderStyle}
         text = {text}
-        textColor = {textColorTest}
-        width = {Math.floor(widthTest)}
-        height = {Math.floor(heightTest)}
+        textColor = {textColor}
+        width = {Math.floor(width)}
+        height = {Math.floor(height)}
+        
         ></ButtonResult>
         <TouchableOpacity
         onPress={()=> console.log(myListButton)}
