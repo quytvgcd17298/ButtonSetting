@@ -38,7 +38,7 @@ const InputScreen = ({navigation}) => {
             textColor:"white",
             backgroundColor:"red",
             buttonWidth: "Dynamic",
-            buttonWidthValue: "56",
+            buttonWidthValue: "100",
             buttonHeight: "Dynamic",
             border:"No",
             buttonHeightValue: "56",
@@ -80,6 +80,7 @@ const InputScreen = ({navigation}) => {
         borderRadius: Math.floor(borderRadius),
         borderColor:borderColor
         }),
+        console.log(myListButton)
       );
     }
     catch(err){
@@ -91,7 +92,16 @@ const InputScreen = ({navigation}) => {
     <SafeAreaView>
       <ScrollView style={styles.container}>
         <TouchableOpacity
-        style = {{alignItems:'center', justifyContent:'center',borderWidth:2, height:50, width:100, borderRadius:5}}
+        style = {{alignItems:'center', 
+        justifyContent:'center',
+        borderWidth:2,
+        height:50,
+        width:100,
+        borderRadius:5,
+        backgroundColor: "red",
+        marginLeft:250,
+        marginTop:20
+      }}
         onPress={()=>handleButton(
           navigation.navigate("Result")
         )}
@@ -441,10 +451,6 @@ const InputScreen = ({navigation}) => {
         height = {Math.floor(height)}
         
         ></ButtonResult>
-        <TouchableOpacity
-        onPress={()=> console.log(myListButton)}
-        style={{height:20,width:20, borderWidth:1}}
-        ></TouchableOpacity>
     </ScrollView>
     </SafeAreaView>
   )

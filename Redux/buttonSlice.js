@@ -13,7 +13,7 @@ export default createSlice({
             textColor:"white",
             backgroundColor:"red",
             buttonWidth: "Dynamic",
-            buttonWidthValue: "56",
+            buttonWidthValue: "100",
             buttonHeight: "Dynamic",
             border:"No",
             buttonHeightValue: "56",
